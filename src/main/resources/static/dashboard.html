@@ -24,24 +24,42 @@
     </nav>
 
     <main class="page-content">
+
+        <h2>Dashboard</h2>
+        <p style="color:#555; margin-bottom:24px;">
+            Welcome to ClinicCare. Use the quick actions below to manage your appointments.
+        </p>
+
         <div class="container">
 
-            <!-- BOOK APPOINTMENT CARD -->
             <div class="card">
                 <h3>Book Appointment</h3>
-
-                <label>Doctor</label>
-                <select id="doctorSelect"></select>
-
-                <label>Date & Time</label>
-                <input type="datetime-local" id="appointmentTime" />
-
-                <button class="primary-btn" onclick="bookAppointment()">Book Appointment</button>
-
-                <p id="message" class="message"></p>
+                <p>Schedule a new appointment with a doctor.</p>
+                <a href="book-appointment.html" class="primary-btn">Book Now</a>
             </div>
+
+            <div class="card">
+                <h3>My Appointments</h3>
+                <p>View and manage your upcoming appointments.</p>
+                <a href="appointments.html" class="primary-btn">View Appointments</a>
+            </div>
+
+            <div class="card">
+                <h3>Doctors</h3>
+                <p>Browse doctors and their specializations.</p>
+                <a href="doctors.html" class="primary-btn">View Doctors</a>
+            </div>
+
+            <div class="card">
+                <h3>My Profile</h3>
+                <p>View your account details.</p>
+                <a href="profile.html" class="primary-btn">Go to Profile</a>
+            </div>
+
         </div>
+
     </main>
+
 
     <!-- MY APPOINTMENTS CARD -->
     <div class="card">
