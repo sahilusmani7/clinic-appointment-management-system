@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>My Cart</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="top-nav">
+        <div class="nav-left">
+            <span class="brand">ClinicCare</span>
+        </div>
+        <div class="nav-right">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="medicines.html">Medicines</a>
+            <a href="cart.html">Cart</a>
+            <a href="orders.html">Orders</a>
+            <a href="profile.html">Profile</a>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <main class="page-content">
+        <h2>My Cart</h2>
+
+        <div id="cartItems" class="container"></div>
+
+        <div class="card" style="margin-top:20px; max-width:420px;">
+            <h3>Total</h3>
+            <p id="totalAmount">₹0</p>
+            <a href="checkout.html" class="primary-btn">
+                Proceed to Checkout
+            </a>
+
+        </div>
+    </main>
+
+    <script>
+        function getCart() {
+            return JSON.parse(localStorage.getItem("cart")) || [];
+        }
+
+        function renderCart() {
+            const cart = getCart();
+            const container = document.getElementById("cartItems");
+            const totalEl = document.getElementById("totalAmount");
+
+            container.innerHTML = "";
+            let total = 0;
+
+            if (cart.length === 0) {
+                container.innerHTML = "<p>Your cart is empty.</p>";
+                totalEl.innerText = "₹0";
+                return;
+            }
+
+            cart.forEach(item => {
+                total += item.price * item.qty;
+
+                const card = document.createElement("div");
+                card.className = "card";
+                card.innerHTML = `
+            <h3>${item.name}</h3>
+            <p>Price: ₹${item.price}</p>
+            <p>Quantity: ${item.qty}</p>
+        `;
+                container.appendChild(card);
+            });
+
+            totalEl.innerText = "₹" + total;
+        }
+
+
+        function logout() {
+            localStorage.removeItem("token");
+            window.location.href = "index.html";
+        }
+
+        renderCart();
+    </script>
+
+</body>
+
+</html>

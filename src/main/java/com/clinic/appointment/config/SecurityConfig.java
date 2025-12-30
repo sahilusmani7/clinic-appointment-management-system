@@ -34,6 +34,8 @@ public class SecurityConfig {
                                                                 "/book-appointment.html",
                                                                 "/doctors.html",
                                                                 "/profile.html",
+                                                                "/medicines.html",
+                                                                "/cart.html",
 
                                                                 "/css/**",
                                                                 "/js/**",
@@ -41,7 +43,10 @@ public class SecurityConfig {
                                                                 "/auth/login",
                                                                 "/users",
                                                                 "/doctors",
-                                                                "/appointments/**")
+                                                                "/medicines/**",
+                                                                "/orders.html",
+                                                                "/checkout.html"
+                                                        )
                                                 .permitAll()
                                                 .anyRequest().authenticated())
 
