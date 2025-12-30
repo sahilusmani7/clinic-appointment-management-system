@@ -18,10 +18,12 @@
             <a href="dashboard.html">Dashboard</a>
             <a href="appointments.html">Appointments</a>
             <a href="medicines.html">Medicines</a>
+            <a href="cart.html">Cart</a>
             <a href="orders.html">Orders</a>
             <a href="profile.html">Profile</a>
             <button class="logout-btn" onclick="logout()">Logout</button>
         </div>
+
     </nav>
 
     <!-- PAGE CONTENT -->
@@ -54,25 +56,47 @@
 
             medicines.forEach(med => {
                 const card = document.createElement("div");
-                card.className = "card";
+                card.className = "card medicine-card";
+
+                // Simple letter-based visual (no emojis/images)
+                const visual = med.name.substring(0, 2).toUpperCase();
+
+                let stockClass = "stock-ok";
+                let stockText = "In stock";
+                if (med.stockQuantity <= 10 && med.stockQuantity > 0) {
+                    stockClass = "stock-low";
+                    stockText = "Low stock";
+                } else if (med.stockQuantity === 0) {
+                    stockClass = "stock-out";
+                    stockText = "Out of stock";
+                }
 
                 card.innerHTML = `
-            <h3>${med.name}</h3>
-            <p><strong>Category:</strong> ${med.category || "General"}</p>
-            <p><strong>Price:</strong> ₹${med.price}</p>
-            <p><strong>Stock:</strong> ${med.stockQuantity}</p>
-            <p>
-                <strong>Prescription:</strong>
-                ${med.prescriptionRequired ? "Required" : "Not Required"}
-            </p>
+        <div class="medicine-media">${visual}</div>
 
-        <button class="primary-btn" onclick='addToCart(${JSON.stringify(med)})'>
-            Add to Cart
-        </button>
-        `;
+        <h3 class="medicine-name">${med.name}</h3>
+
+        <div class="medicine-meta">
+            ${med.category || "General"} • 
+            <span class="${stockClass}">${stockText}</span>
+        </div>
+
+        <div class="medicine-price">₹${med.price}</div>
+
+        <div class="medicine-actions">
+            <span class="badge ${med.prescriptionRequired ? "badge-warning" : "badge-success"}">
+                ${med.prescriptionRequired ? "Prescription Required" : "OTC"}
+            </span>
+
+            <button class="primary-btn" onclick='addToCart(${JSON.stringify(med)})'>
+                Add
+            </button>
+        </div>
+    `;
 
                 container.appendChild(card);
             });
+
         }
 
         function logout() {

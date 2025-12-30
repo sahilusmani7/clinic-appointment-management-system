@@ -16,60 +16,73 @@
         <div class="nav-right">
             <a href="dashboard.html">Dashboard</a>
             <a href="appointments.html">Appointments</a>
-            <a href="book-appointment.html">Book</a>
-            <a href="doctors.html">Doctors</a>
+            <a href="medicines.html">Medicines</a>
+            <a href="cart.html">Cart</a>
+            <a href="orders.html">Orders</a>
             <a href="profile.html">Profile</a>
             <button class="logout-btn" onclick="logout()">Logout</button>
         </div>
+
     </nav>
 
     <main class="page-content">
+        <div class="dashboard-header">
+            <div>
+                <div class="dashboard-title">Dashboard</div>
+                <div class="dashboard-subtitle">
+                    Welcome back. Manage your clinic activity from here.
+                </div>
+            </div>
+        </div>
 
-        <h2>Dashboard</h2>
-        <p style="color:#555; margin-bottom:24px;">
-            Welcome to ClinicCare. Use the quick actions below to manage your appointments.
-        </p>
+        <div class="dashboard-grid">
 
-        <div class="container">
-
-            <div class="card">
-                <h3>Book Appointment</h3>
-                <p>Schedule a new appointment with a doctor.</p>
-                <a href="book-appointment.html" class="primary-btn">Book Now</a>
+            <div class="card dashboard-card">
+                <div>
+                    <div class="dashboard-icon">AP</div>
+                    <h3>Appointments</h3>
+                    <p>View and manage your upcoming appointments.</p>
+                </div>
+                <div class="dashboard-cta">
+                    <a href="appointments.html" class="primary-btn">View Appointments</a>
+                </div>
             </div>
 
-            <div class="card">
-                <h3>My Appointments</h3>
-                <p>View and manage your upcoming appointments.</p>
-                <a href="appointments.html" class="primary-btn">View Appointments</a>
+            <div class="card dashboard-card">
+                <div>
+                    <div class="dashboard-icon">BK</div>
+                    <h3>Book Appointment</h3>
+                    <p>Schedule a new appointment with a doctor.</p>
+                </div>
+                <div class="dashboard-cta">
+                    <a href="book-appointment.html" class="primary-btn">Book Now</a>
+                </div>
             </div>
 
-            <div class="card">
-                <h3>Doctors</h3>
-                <p>Browse doctors and their specializations.</p>
-                <a href="doctors.html" class="primary-btn">View Doctors</a>
+            <div class="card dashboard-card">
+                <div>
+                    <div class="dashboard-icon">MD</div>
+                    <h3>Medicines</h3>
+                    <p>Browse medicines and place orders.</p>
+                </div>
+                <div class="dashboard-cta">
+                    <a href="medicines.html" class="primary-btn">Browse Medicines</a>
+                </div>
             </div>
 
-            <div class="card">
-                <h3>My Profile</h3>
-                <p>View your account details.</p>
-                <a href="profile.html" class="primary-btn">Go to Profile</a>
+            <div class="card dashboard-card">
+                <div>
+                    <div class="dashboard-icon">PR</div>
+                    <h3>My Profile</h3>
+                    <p>View your account details and settings.</p>
+                </div>
+                <div class="dashboard-cta">
+                    <a href="profile.html" class="primary-btn">View Profile</a>
+                </div>
             </div>
 
         </div>
-
     </main>
-
-
-    <!-- MY APPOINTMENTS CARD -->
-    <div class="card">
-        <h3>My Appointments</h3>
-        <button class="secondary-btn" onclick="loadAppointments()">Refresh</button>
-
-        <div id="appointments" class="appointments-container"></div>
-    </div>
-
-    </div>
 
     <script src="js/appointments.js"></script>
 </body>

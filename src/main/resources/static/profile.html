@@ -1,59 +1,64 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>My Profile</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
-<!-- GLOBAL NAVBAR -->
-<nav class="top-nav">
-    <div class="nav-left">
-        <span class="brand">ClinicCare</span>
-    </div>
+    <!-- GLOBAL NAVBAR -->
+    <nav class="top-nav">
+        <div class="nav-left">
+            <span class="brand">ClinicCare</span>
+        </div>
 
-    <div class="nav-right">
-        <a href="dashboard.html">Dashboard</a>
-        <a href="appointments.html">Appointments</a>
-        <a href="book-appointment.html">Book</a>
-        <a href="doctors.html">Doctors</a>
-        <a href="profile.html">Profile</a>
-        <button class="logout-btn" onclick="logout()">Logout</button>
-    </div>
-</nav>
+        <div class="nav-right">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="appointments.html">Appointments</a>
+            <a href="medicines.html">Medicines</a>
+            <a href="cart.html">Cart</a>
+            <a href="orders.html">Orders</a>
+            <a href="profile.html">Profile</a>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
 
-<!-- PAGE CONTENT -->
-<main class="page-content">
+    </nav>
 
-    <h2>My Profile</h2>
+    <!-- PAGE CONTENT -->
+    <main class="page-content">
 
-    <div class="card" style="max-width: 420px;">
-        <p><strong>Email:</strong></p>
-        <p id="userEmail" style="margin-top:4px; color:#555;"></p>
+        <h2>My Profile</h2>
 
-        <hr style="margin:20px 0; border:none; border-top:1px solid #eee;">
+        <div class="card" style="max-width: 420px;">
+            <p><strong>Email:</strong></p>
+            <p id="userEmail" style="margin-top:4px; color:#555;"></p>
 
-        <button class="secondary-btn" onclick="logout()">Logout</button>
-    </div>
+            <hr style="margin:20px 0; border:none; border-top:1px solid #eee;">
 
-</main>
+            <button class="secondary-btn" onclick="logout()">Logout</button>
+        </div>
 
-<script>
-function logout() {
-    localStorage.removeItem("token");
-    window.location.href = "index.html";
-}
+    </main>
 
-// Simple client-side identity display
-const token = localStorage.getItem("token");
-if (!token) {
-    window.location.href = "index.html";
-}
+    <script>
+        function logout() {
+            localStorage.removeItem("token");
+            window.location.href = "index.html";
+        }
 
-// Decode JWT payload (safe, client-side only for display)
-const payload = JSON.parse(atob(token.split('.')[1]));
-document.getElementById("userEmail").innerText = payload.sub || "Unknown";
-</script>
+        // Simple client-side identity display
+        const token = localStorage.getItem("token");
+        if (!token) {
+            window.location.href = "index.html";
+        }
+
+        // Decode JWT payload (safe, client-side only for display)
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        document.getElementById("userEmail").innerText = payload.sub || "Unknown";
+    </script>
 
 </body>
+
 </html>

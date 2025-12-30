@@ -15,12 +15,14 @@
         </div>
         <div class="nav-right">
             <a href="dashboard.html">Dashboard</a>
+            <a href="appointments.html">Appointments</a>
             <a href="medicines.html">Medicines</a>
             <a href="cart.html">Cart</a>
             <a href="orders.html">Orders</a>
             <a href="profile.html">Profile</a>
             <button class="logout-btn" onclick="logout()">Logout</button>
         </div>
+
     </nav>
 
     <!-- PAGE CONTENT -->
@@ -83,7 +85,13 @@
                 card.innerHTML = `
         <h3>Order #${order.id}</h3>
         <p><strong>Total:</strong> ₹${order.totalAmount}</p>
-        <p><strong>Status:</strong> ${order.status}</p>
+        <p>
+        <strong>Status:</strong>
+        <span class="badge ${getStatusBadge(order.status)}">
+            ${order.status}
+            </span>
+        </p>
+
         <p><strong>Placed On:</strong>
             ${new Date(order.createdAt).toLocaleString()}
         </p>
@@ -98,6 +106,23 @@
             localStorage.removeItem("token");
             window.location.href = "index.html";
         }
+        function getStatusBadge(status) {
+            switch (status) {
+                case "CREATED":
+                    return "badge-info";
+                case "PAID":
+                    return "badge-success";
+                case "DISPATCHED":
+                    return "badge-warning";
+                case "DELIVERED":
+                    return "badge-success";
+                case "CANCELLED":
+                    return "badge-danger";
+                default:
+                    return "badge-info";
+            }
+        }
+
 
         loadOrders();
         async function updateStatus(orderId, action) {

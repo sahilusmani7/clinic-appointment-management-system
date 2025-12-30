@@ -49,15 +49,21 @@ async function loadDoctorsPage() {
     const container = document.getElementById("doctorsList");
     container.innerHTML = "";
 
-    doctors.forEach(doc => {
-        const div = document.createElement("div");
-        div.className = "appointment-card";
-        div.innerHTML = `
-            <h4>${doc.name}</h4>
-            <p><strong>Specialization:</strong> ${doc.specialization}</p>
-        `;
-        container.appendChild(div);
-    });
+doctors.forEach(doc => {
+    const div = document.createElement("div");
+    div.className = "card doctor-card";
+
+    div.innerHTML = `
+        <div class="doctor-avatar">DR</div>
+        <h3 class="doctor-name">${doc.name}</h3>
+        <span class="badge badge-info doctor-spec">
+            ${doc.specialization || "General"}
+        </span>
+    `;
+
+    container.appendChild(div);
+});
+
 }
 
 function logout() {
