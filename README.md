@@ -1,132 +1,189 @@
-# Clinic Appointment Management System
+🏥 Clinic Appointment Management System
 
-This project is a full-stack clinic appointment management system designed to simulate how a real healthcare booking platform works. It focuses on secure authentication, clean backend architecture, and a simple but functional frontend that demonstrates end-to-end flow.
+A full-stack Clinic Appointment & Medicine Ordering System built using Spring Boot, JWT authentication, and a clean vanilla HTML/CSS/JavaScript frontend.
 
-The goal of this project was not just to build features, but to follow production-style backend practices such as JWT authentication, proper API security, DTO usage, and clear separation of concerns.
+This project demonstrates real-world backend design, secure authentication, REST APIs, and a production-style UI without overusing frameworks.
 
----
+🚀 Features
+🔐 Authentication & Security
 
-## Overview
+JWT-based login system
 
-The system allows users to register, log in, and book appointments with doctors. All sensitive operations are protected using JWT-based authentication. Each user can only view and manage their own appointments.
+Secure API access using Spring Security
 
-The frontend is intentionally kept framework-free using plain HTML, CSS, and JavaScript to clearly demonstrate core web fundamentals and how they interact with a secure backend.
+Password encryption with BCrypt
 
----
+Token stored client-side and attached to protected requests
 
-## Key Features
+👨‍⚕️ Appointments
 
-### Authentication and Security
-- User registration and login
-- JWT-based stateless authentication
-- Password hashing using BCrypt
-- Spring Security 6 with Lambda DSL configuration
-- Proper CORS handling for frontend and backend communication
-- Protected endpoints with role-ready design
+View available doctors
 
-### Appointment Management
-- Fetch available doctors
-- Book appointments as an authenticated user
-- Prevent double booking for the same doctor and time slot
-- View appointments specific to the logged-in user
+Book appointments with date & time
 
-### Backend Design
-- RESTful API design
-- Layered architecture (Controller, Service, Repository)
-- DTOs used to prevent sensitive data exposure
-- Clean separation between entities and API responses
+View all your booked appointments
 
-### Frontend
-- Modular UI with separate Login, Register, and Dashboard pages
-- Dashboard-style layout for booking and viewing appointments
-- JWT stored in browser local storage and attached to API requests
-- Simple, readable UI focused on usability rather than heavy styling
+Appointments are user-specific and secure
 
----
+💊 Medicines & Orders
 
-## Tech Stack
+Browse available medicines
 
-### Backend
-- Java 17
-- Spring Boot
-- Spring Security
-- JWT (JSON Web Tokens)
-- Spring Data JPA
-- MySQL
-- Maven
+Add medicines to cart
 
-### Frontend
-- HTML
-- CSS
-- Vanilla JavaScript
+Checkout and place orders
 
----
+Order lifecycle:
 
-## Architecture Explanation
+CREATED → PAID → DISPATCHED → DELIVERED
 
-The backend follows a standard layered architecture:
+Order status updates reflected in UI
 
-- **Controller Layer**  
-  Handles HTTP requests and responses. Controllers are kept thin and delegate business logic to services.
+📊 Dashboard
 
-- **Service Layer**  
-  Contains core business logic such as authentication handling, appointment booking, and validation. Security context is used here to identify the logged-in user via JWT.
+Central navigation hub
 
-- **Repository Layer**  
-  Manages database access using Spring Data JPA. All database operations are abstracted behind repositories.
+Quick access to appointments, booking, medicines, orders, and profile
 
-DTOs are used when returning responses to the frontend to ensure that internal entities and sensitive fields like passwords are never exposed.
+Clean card-based layout
 
----
+👤 User Profile
 
-## API Endpoints (Sample)
+View logged-in user details
 
-| Method | Endpoint | Description |
-|------|---------|------------|
-| POST | /users | Register a new user |
-| POST | /auth/login | Authenticate user and receive JWT |
-| GET | /doctors | Fetch list of doctors |
-| POST | /appointments | Book an appointment |
-| GET | /appointments | View appointments for logged-in user |
+Secure logout from anywhere
 
----
+🧱 Tech Stack
+Backend
 
-## Security Considerations
+Java 17
 
-- Passwords are never stored in plain text and are hashed using BCrypt.
-- JWT is used for stateless authentication.
-- Protected endpoints require a valid JWT token.
-- Sensitive fields are excluded from API responses using DTOs.
-- CORS is configured at the Spring Security layer to safely allow frontend access.
+Spring Boot
 
----
+Spring Security
 
-## Frontend Pages
+JWT (JSON Web Tokens)
 
-- Login Page  
-- Register Page  
-- Dashboard with appointment booking and appointment list
+Spring Data JPA
 
-The frontend demonstrates how a lightweight UI can securely interact with a modern backend without relying on heavy frameworks.
+H2 / MySQL (configurable)
 
----
+Maven
 
-## Deployment
+Frontend
 
-- TBD
----
+HTML5
 
-## What This Project Demonstrates
+CSS3 (custom, no frameworks)
 
-- Practical understanding of Spring Boot and Spring Security
-- Real-world JWT authentication flow
-- Secure API design
-- Clean backend architecture
-- Full-stack integration without shortcuts
-- Ability to document and explain technical decisions clearly
+Vanilla JavaScript (Fetch API)
 
----
+Responsive layout
 
-## Author
+📁 Project Structure (Simplified)
+src/main/java/com/clinic/appointment
+ ├── config        → Security configuration
+ ├── controller    → REST controllers
+ ├── dto           → Data Transfer Objects
+ ├── entity        → JPA entities
+ ├── repository    → Database repositories
+ ├── security      → JWT filter & utilities
+ └── service       → Business logic
 
-**Sahil Usmani**
+src/main/resources/static
+ ├── *.html        → UI pages
+ ├── css/style.css
+ └── js/*.js
+
+🔑 Authentication Flow
+
+User logs in via /auth/login
+
+Backend issues JWT token
+
+Token is stored in localStorage
+
+All protected requests send:
+
+Authorization: Bearer <token>
+
+
+JWT filter validates token and sets authentication context
+
+▶️ How to Run
+Backend
+./mvnw spring-boot:run
+
+
+Backend runs at:
+
+http://localhost:8080
+
+Frontend
+
+Open any HTML file directly or use a local static server (recommended):
+
+npx serve src/main/resources/static
+
+
+Then visit:
+
+http://localhost:5500/index.html
+
+🧪 Default Flow to Test
+
+Register a new user
+
+Login to receive JWT
+
+Browse doctors
+
+Book an appointment
+
+Browse medicines
+
+Add to cart → checkout → place order
+
+Track order status
+
+🛠️ UI Improvements Done
+
+Consistent navigation across all pages
+
+Centralized logout handling
+
+Clean card-based UI
+
+Status badges for clarity
+
+Responsive layout for smaller screens
+
+🎯 Learning Outcomes
+
+Secure REST API design
+
+JWT authentication flow
+
+Spring Security customization
+
+Frontend ↔ Backend integration
+
+State management using localStorage
+
+Clean UI without heavy frameworks
+
+📌 Future Enhancements (Optional)
+
+Appointment cancellation
+
+Admin dashboard
+
+Medicine stock auto-update
+
+Payment gateway integration
+
+Dashboard analytics
+
+👤 Author
+
+Sahil Usmani
