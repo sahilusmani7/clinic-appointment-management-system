@@ -1,7 +1,11 @@
 const token = localStorage.getItem("token");
 const doctorSelect = document.getElementById("doctorSelect");
 const message = document.getElementById("message");
-
+function logout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("cart"); // optional but clean
+    window.location.href = "index.html";
+}
 async function loadDoctors() {
     const response = await fetch("http://localhost:8080/doctors");
     const doctors = await response.json();

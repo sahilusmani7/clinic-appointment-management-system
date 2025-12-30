@@ -1,5 +1,6 @@
 package com.clinic.appointment.config;
 
+import org.springframework.http.HttpMethod;
 import com.clinic.appointment.security.JwtAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +26,11 @@ public class SecurityConfig {
                                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                                 .csrf(csrf -> csrf.disable())
                                 .authorizeHttpRequests(auth -> auth
+
+                                                // Allow browser preflight
+                                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                                                // Public static pages & assets
                                                 .requestMatchers(
                                                                 "/",
                                                                 "/index.html",
@@ -36,18 +42,19 @@ public class SecurityConfig {
                                                                 "/profile.html",
                                                                 "/medicines.html",
                                                                 "/cart.html",
-
-                                                                "/css/**",
-                                                                "/js/**",
-
-                                                                "/auth/login",
-                                                                "/users",
-                                                                "/doctors",
-                                                                "/medicines/**",
                                                                 "/orders.html",
-                                                                "/checkout.html"
-                                                        )
+                                                                "/checkout.html",
+                                                                "/css/**",
+                                                                "/js/**")
                                                 .permitAll()
+
+                                                // Public APIs
+                                                .requestMatchers("/auth/**").permitAll()
+                                                .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                                                .requestMatchers(HttpMethod.GET, "/doctors").permitAll()
+                                                .requestMatchers(HttpMethod.GET, "/medicines/**").permitAll()
+
+                                                // Secured APIs (JWT required)
                                                 .anyRequest().authenticated())
 
                                 .addFilterBefore(jwtAuthFilter,
