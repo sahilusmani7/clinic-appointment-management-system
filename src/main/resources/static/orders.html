@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>My Orders</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-    <script src="js/appointments.js"></script>
-    <!-- NAVBAR -->
-    <nav class="top-nav">
-        <div class="nav-left">
-            <span class="brand">ClinicCare</span>
-        </div>
+
+<!-- NAVBAR -->
+<nav class="top-nav">
+    <div class="nav-left">
+        <span class="brand">ClinicCare</span>
+    </div>
     <div class="nav-right">
         <a href="dashboard.html">Dashboard</a>
         <a href="appointments.html">Appointments</a>
@@ -24,124 +23,149 @@
         <a href="profile.html">Profile</a>
         <button class="logout-btn" onclick="logout()">Logout</button>
     </div>
-    </nav>
+</nav>
 
-    <!-- PAGE CONTENT -->
-    <main class="page-content">
+<!-- PAGE CONTENT -->
+<main class="page-content">
 
-        <h2>My Orders</h2>
-        <p style="color:#6b7280; margin-bottom:24px;">
-            Track your medicine orders and their current status.
-        </p>
+    <h2>My Orders</h2>
+    <p style="color:#6b7280; margin-bottom:24px;">
+        Track your medicine orders and their current status.
+    </p>
 
-        <div id="ordersContainer" class="container">
-            <!-- Orders will be loaded here -->
-        </div>
-    </main>
+    <div id="ordersContainer" class="container">
+        <!-- Orders will render here -->
+    </div>
 
-    <script>
-        const token = localStorage.getItem("token");
+</main>
 
-        async function loadOrders() {
-            const response = await fetch("http://localhost:8080/orders", {
-                headers: {
-                    "Authorization": "Bearer " + token
-                }
-            });
+<script>
+/* =========================
+   AUTH + API BASE
+========================= */
+const token = localStorage.getItem("token");
+if (!token) {
+    window.location.href = "index.html";
+}
 
-            if (!response.ok) {
-                alert("Failed to load orders");
-                return;
-            }
+const API_BASE =
+    window.location.port === "5500"
+        ? "http://localhost:8080"
+        : window.location.origin;
 
-            const orders = await response.json();
-            const container = document.getElementById("ordersContainer");
-            container.innerHTML = "";
+/* =========================
+   LOAD ORDERS
+========================= */
+async function loadOrders() {
+    const response = await fetch(`${API_BASE}/orders`, {
+        headers: {
+            "Authorization": "Bearer " + token
+        }
+    });
 
-            if (orders.length === 0) {
-                container.innerHTML = "<p>You have no orders yet.</p>";
-                return;
-            }
+    if (!response.ok) {
+        alert("Failed to load orders");
+        return;
+    }
 
-            orders.forEach(order => {
-                const card = document.createElement("div");
-                card.className = "card";
+    const orders = await response.json();
+    const container = document.getElementById("ordersContainer");
+    container.innerHTML = "";
 
-                let actionButton = "";
+    if (orders.length === 0) {
+        container.innerHTML = "<p>You have no orders yet.</p>";
+        return;
+    }
 
-                if (order.status === "PAID") {
-                    actionButton = `
-            <button class="secondary-btn"
-                onclick="updateStatus(${order.id}, 'dispatch')">
-                Mark as Dispatched
-            </button>`;
-                } else if (order.status === "DISPATCHED") {
-                    actionButton = `
-            <button class="secondary-btn"
-                onclick="updateStatus(${order.id}, 'deliver')">
-                Mark as Delivered
-            </button>`;
-                }
+    orders.forEach(order => {
+        const card = document.createElement("div");
+        card.className = "card";
 
-                card.innerHTML = `
-        <h3>Order #${order.id}</h3>
-        <p><strong>Total:</strong> ₹${order.totalAmount}</p>
-        <p>
-        <strong>Status:</strong>
-        <span class="badge ${getStatusBadge(order.status)}">
-            ${order.status}
-            </span>
-        </p>
+        let actionButton = "";
 
-        <p><strong>Placed On:</strong>
-            ${new Date(order.createdAt).toLocaleString()}
-        </p>
-        ${actionButton}
-    `;
-
-                container.appendChild(card);
-            });
+        if (order.status === "PAID") {
+            actionButton = `
+                <button class="secondary-btn"
+                    onclick="updateStatus(${order.id}, 'dispatch')">
+                    Mark as Dispatched
+                </button>`;
+        } else if (order.status === "DISPATCHED") {
+            actionButton = `
+                <button class="secondary-btn"
+                    onclick="updateStatus(${order.id}, 'deliver')">
+                    Mark as Delivered
+                </button>`;
         }
 
-        function getStatusBadge(status) {
-            switch (status) {
-                case "CREATED":
-                    return "badge-info";
-                case "PAID":
-                    return "badge-success";
-                case "DISPATCHED":
-                    return "badge-warning";
-                case "DELIVERED":
-                    return "badge-success";
-                case "CANCELLED":
-                    return "badge-danger";
-                default:
-                    return "badge-info";
+        card.innerHTML = `
+            <h3>Order #${order.id}</h3>
+            <p><strong>Total:</strong> ₹${order.totalAmount}</p>
+
+            <p>
+                <strong>Status:</strong>
+                <span class="badge ${getStatusBadge(order.status)}">
+                    ${order.status}
+                </span>
+            </p>
+
+            <p>
+                <strong>Placed On:</strong>
+                ${new Date(order.createdAt).toLocaleString()}
+            </p>
+
+            ${actionButton}
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+/* =========================
+   UPDATE STATUS
+========================= */
+async function updateStatus(orderId, action) {
+    const response = await fetch(
+        `${API_BASE}/orders/${orderId}/${action}`,
+        {
+            method: "PUT",
+            headers: {
+                "Authorization": "Bearer " + token
             }
         }
+    );
 
+    if (!response.ok) {
+        alert("Status update failed");
+        return;
+    }
 
-        loadOrders();
-        async function updateStatus(orderId, action) {
-            const response = await fetch(
-                `http://localhost:8080/orders/${orderId}/${action}`,
-                {
-                    method: "PUT",
-                    headers: {
-                        "Authorization": "Bearer " + token
-                    }
-                }
-            );
+    loadOrders();
+}
 
-            if (!response.ok) {
-                alert("Status update failed");
-                return;
-            }
+/* =========================
+   HELPERS
+========================= */
+function getStatusBadge(status) {
+    switch (status) {
+        case "CREATED": return "badge-info";
+        case "PAID": return "badge-success";
+        case "DISPATCHED": return "badge-warning";
+        case "DELIVERED": return "badge-success";
+        default: return "badge-info";
+    }
+}
 
-            loadOrders();
-        }
+function logout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("cart");
+    window.location.href = "index.html";
+}
 
-    </script>
+/* =========================
+   INIT
+========================= */
+loadOrders();
+</script>
+
 </body>
-
 </html>

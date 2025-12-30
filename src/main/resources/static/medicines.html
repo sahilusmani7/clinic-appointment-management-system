@@ -14,18 +14,17 @@
             <span class="brand">ClinicCare</span>
         </div>
 
-    <div class="nav-right">
-        <a href="dashboard.html">Dashboard</a>
-        <a href="appointments.html">Appointments</a>
-        <a href="book-appointment.html">Book</a>
-        <a href="doctors.html">Doctors</a>
-        <a href="medicines.html">Medicines</a>
-        <a href="cart.html">Cart</a>
-        <a href="orders.html">Orders</a>
-        <a href="profile.html">Profile</a>
-        <button class="logout-btn" onclick="logout()">Logout</button>
-    </div>
-
+        <div class="nav-right">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="appointments.html">Appointments</a>
+            <a href="book-appointment.html">Book</a>
+            <a href="doctors.html">Doctors</a>
+            <a href="medicines.html">Medicines</a>
+            <a href="cart.html">Cart</a>
+            <a href="orders.html">Orders</a>
+            <a href="profile.html">Profile</a>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
     </nav>
 
     <!-- PAGE CONTENT -->
@@ -44,9 +43,10 @@
 
     <script>
         const token = localStorage.getItem("token");
+        const API_BASE = window.location.origin;
 
         async function loadMedicines() {
-            const response = await fetch("http://localhost:8080/medicines", {
+            const response = await fetch(`${API_BASE}/medicines`, {
                 headers: {
                     "Authorization": "Bearer " + token
                 }
@@ -60,7 +60,6 @@
                 const card = document.createElement("div");
                 card.className = "card medicine-card";
 
-                // Simple letter-based visual (no emojis/images)
                 const visual = med.name.substring(0, 2).toUpperCase();
 
                 let stockClass = "stock-ok";
@@ -74,32 +73,26 @@
                 }
 
                 card.innerHTML = `
-        <div class="medicine-media">${visual}</div>
-
-        <h3 class="medicine-name">${med.name}</h3>
-
-        <div class="medicine-meta">
-            ${med.category || "General"} • 
-            <span class="${stockClass}">${stockText}</span>
-        </div>
-
-        <div class="medicine-price">₹${med.price}</div>
-
-        <div class="medicine-actions">
-            <span class="badge ${med.prescriptionRequired ? "badge-warning" : "badge-success"}">
-                ${med.prescriptionRequired ? "Prescription Required" : "OTC"}
-            </span>
-
-            <button class="primary-btn" onclick='addToCart(${JSON.stringify(med)})'>
-                Add
-            </button>
-        </div>
-    `;
-
+                    <div class="medicine-media">${visual}</div>
+                    <h3 class="medicine-name">${med.name}</h3>
+                    <div class="medicine-meta">
+                        ${med.category || "General"} • 
+                        <span class="${stockClass}">${stockText}</span>
+                    </div>
+                    <div class="medicine-price">₹${med.price}</div>
+                    <div class="medicine-actions">
+                        <span class="badge ${med.prescriptionRequired ? "badge-warning" : "badge-success"}">
+                            ${med.prescriptionRequired ? "Prescription Required" : "OTC"}
+                        </span>
+                        <button class="primary-btn" onclick='addToCart(${JSON.stringify(med)})'>
+                            Add
+                        </button>
+                    </div>
+                `;
                 container.appendChild(card);
             });
-
         }
+
         function getCart() {
             return JSON.parse(localStorage.getItem("cart")) || [];
         }
@@ -122,9 +115,10 @@
             localStorage.setItem("cart", JSON.stringify(cart));
             alert("Added to cart");
         }
+
         loadMedicines();
     </script>
+
     <script src="js/appointments.js"></script>
 </body>
-
 </html>
