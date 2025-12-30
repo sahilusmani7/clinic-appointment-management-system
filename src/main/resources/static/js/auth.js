@@ -31,4 +31,9 @@ form.addEventListener("submit", async function (e) {
     } catch (err) {
         errorText.innerText = "Login failed";
     }
+    function logout() {
+        localStorage.removeItem("token");
+        window.location.href = "index.html";
+    }
+
 });

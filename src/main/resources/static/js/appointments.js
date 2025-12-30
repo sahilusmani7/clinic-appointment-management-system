@@ -67,10 +67,4 @@ async function loadAppointments() {
     });
 }
 
-
-function logout() {
-    localStorage.removeItem("token");
-    window.location.href = "index.html";
-}
-
 loadDoctors();
