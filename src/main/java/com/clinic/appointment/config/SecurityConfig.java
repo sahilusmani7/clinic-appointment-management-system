@@ -12,60 +12,66 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
 
-    private final JwtAuthFilter jwtAuthFilter;
+        private final JwtAuthFilter jwtAuthFilter;
 
-    public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
-        this.jwtAuthFilter = jwtAuthFilter;
-    }
+        public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
+                this.jwtAuthFilter = jwtAuthFilter;
+        }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/health",
-                                "/auth/login",
-                                "/doctors",
-                                "/users")
-                        .permitAll()
-                        .anyRequest().authenticated())
-                .addFilterBefore(jwtAuthFilter,
-                        UsernamePasswordAuthenticationFilter.class)
-                .formLogin(form -> form.disable())
-                .httpBasic(basic -> basic.disable());
+                http
+                                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                                .csrf(csrf -> csrf.disable())
+                                .authorizeHttpRequests(auth -> auth
+                                                .requestMatchers(
+                                                                "/",
+                                                                "/index.html",
+                                                                "/register.html",
+                                                                "/dashboard.html",
+                                                                "/css/**",
+                                                                "/js/**",
+                                                                "/auth/login",
+                                                                "/users",
+                                                                "/doctors",
+                                                                "/appointments/**")
+                                                .permitAll()
+                                                .anyRequest().authenticated())
+                                .addFilterBefore(jwtAuthFilter,
+                                                UsernamePasswordAuthenticationFilter.class)
+                                .formLogin(form -> form.disable())
+                                .httpBasic(basic -> basic.disable());
 
-        return http.build();
-    }
+                return http.build();
+        }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+                return new BCryptPasswordEncoder();
+        }
 
-    @Bean
-    public org.springframework.web.cors.CorsConfigurationSource corsConfigurationSource() {
+        @Bean
+        public org.springframework.web.cors.CorsConfigurationSource corsConfigurationSource() {
 
-        org.springframework.web.cors.CorsConfiguration configuration = new org.springframework.web.cors.CorsConfiguration();
+                org.springframework.web.cors.CorsConfiguration configuration = new org.springframework.web.cors.CorsConfiguration();
 
-        configuration.setAllowedOrigins(
-                java.util.List.of(
-                        "http://localhost:5500",
-                        "http://127.0.0.1:5500"));
+                configuration.setAllowedOrigins(
+                                java.util.List.of(
+                                                "http://localhost:5500",
+                                                "http://127.0.0.1:5500"));
 
-        configuration.setAllowedMethods(
-                java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                configuration.setAllowedMethods(
+                                java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
-        configuration.setAllowedHeaders(java.util.List.of("*"));
-        configuration.setAllowCredentials(true);
+                configuration.setAllowedHeaders(java.util.List.of("*"));
+                configuration.setAllowCredentials(true);
 
-        org.springframework.web.cors.UrlBasedCorsConfigurationSource source = new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
+                org.springframework.web.cors.UrlBasedCorsConfigurationSource source = new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
 
-        source.registerCorsConfiguration("/**", configuration);
+                source.registerCorsConfiguration("/**", configuration);
 
-        return source;
-    }
+                return source;
+        }
 
 }
