@@ -1,29 +1,54 @@
+const API_BASE =
+    window.location.port === "5500"
+        ? "http://localhost:8080"
+        : window.location.origin;
 const token = localStorage.getItem("token");
+
 const doctorSelect = document.getElementById("doctorSelect");
-const message = document.getElementById("message");
+const appointmentMessage = document.getElementById("message");
+
+/* =========================
+   GLOBAL LOGOUT
+========================= */
 function logout() {
     localStorage.removeItem("token");
-    localStorage.removeItem("cart"); // optional but clean
+    localStorage.removeItem("cart");
     window.location.href = "index.html";
 }
+
+/* =========================
+   LOAD DOCTORS
+========================= */
 async function loadDoctors() {
-    const response = await fetch("http://localhost:8080/doctors");
+    if (!doctorSelect) return;
+
+    const response = await fetch(`${API_BASE}/doctors`, {
+        headers: {
+            "Authorization": "Bearer " + token
+        }
+    });
+
     const doctors = await response.json();
+
+    doctorSelect.innerHTML = "";
 
     doctors.forEach(doc => {
         const option = document.createElement("option");
         option.value = doc.id;
-        option.text = doc.name + " (" + doc.specialization + ")";
+        option.text = `${doc.name} (${doc.specialization})`;
         doctorSelect.appendChild(option);
     });
 }
 
+/* =========================
+   BOOK APPOINTMENT
+========================= */
 async function bookAppointment() {
     const doctorId = doctorSelect.value;
     const time = document.getElementById("appointmentTime").value;
 
     const response = await fetch(
-        `http://localhost:8080/appointments?doctorId=${doctorId}&time=${time}`,
+        `${API_BASE}/appointments?doctorId=${doctorId}&time=${time}`,
         {
             method: "POST",
             headers: {
@@ -33,23 +58,28 @@ async function bookAppointment() {
     );
 
     if (response.ok) {
-        message.innerText = "Appointment booked successfully";
+        appointmentMessage.innerText = "Appointment booked successfully";
         loadAppointments();
     } else {
         const error = await response.text();
-        message.innerText = error;
+        appointmentMessage.innerText = error;
     }
 }
 
+/* =========================
+   LOAD APPOINTMENTS
+========================= */
 async function loadAppointments() {
-    const response = await fetch("http://localhost:8080/appointments", {
+    const container = document.getElementById("appointments");
+    if (!container) return;
+
+    const response = await fetch(`${API_BASE}/appointments`, {
         headers: {
             "Authorization": "Bearer " + token
         }
     });
 
     const data = await response.json();
-    const container = document.getElementById("appointments");
     container.innerHTML = "";
 
     if (data.length === 0) {
@@ -71,4 +101,8 @@ async function loadAppointments() {
     });
 }
 
+/* =========================
+   AUTO LOAD
+========================= */
 loadDoctors();
+loadAppointments();

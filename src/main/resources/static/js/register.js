@@ -1,5 +1,10 @@
+const API_BASE =
+    window.location.port === "5500"
+        ? "http://localhost:8080"
+        : window.location.origin;
+
 const form = document.getElementById("registerForm");
-const message = document.getElementById("message");
+const registerMessage = document.getElementById("message");
 
 form.addEventListener("submit", async function (e) {
     e.preventDefault();
@@ -9,15 +14,15 @@ form.addEventListener("submit", async function (e) {
     const password = document.getElementById("password").value;
 
     try {
-        const response = await fetch("http://localhost:8080/users", {
+        const response = await fetch(`${API_BASE}/users`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                name: name,
-                email: email,
-                password: password,
+                name,
+                email,
+                password,
                 role: "USER"
             })
         });
@@ -26,15 +31,14 @@ form.addEventListener("submit", async function (e) {
             throw new Error("Registration failed");
         }
 
-        message.style.color = "green";
-        message.innerText = "Registration successful! Redirecting to login...";
+        registerMessage.style.color = "green";
+        registerMessage.innerText = "Registration successful! Redirecting...";
 
         setTimeout(() => {
             window.location.href = "index.html";
         }, 1500);
-
     } catch (err) {
-        message.style.color = "#e74c3c";
-        message.innerText = "Email already exists or error occurred";
+        registerMessage.style.color = "#e74c3c";
+        registerMessage.innerText = "Email already exists or error occurred";
     }
 });

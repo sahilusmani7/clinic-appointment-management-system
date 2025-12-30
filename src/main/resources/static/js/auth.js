@@ -8,7 +8,12 @@ form.addEventListener("submit", async function (e) {
     const password = document.getElementById("password").value;
 
     try {
-        const response = await fetch("http://localhost:8080/auth/login", {
+        const API_BASE =
+    window.location.port === "5500"
+        ? "http://localhost:8080"
+        : window.location.origin;
+
+        const response = await fetch(`${API_BASE}/auth/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
