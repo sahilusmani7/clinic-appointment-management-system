@@ -1,72 +1,43 @@
 🏥 Clinic Appointment Management System
 
-A full-stack Clinic Appointment & Medicine Ordering System built using Spring Boot, JWT authentication, and a clean vanilla HTML/CSS/JavaScript frontend.
+A full-stack clinic management web application that allows users to:
 
-This project demonstrates real-world backend design, secure authentication, REST APIs, and a production-style UI without overusing frameworks.
+Register & login securely (JWT authentication)
 
-🚀 Features
-🔐 Authentication & Security
+Book doctor appointments
 
-JWT-based login system
+Browse doctors and medicines
 
-Secure API access using Spring Security
+Add medicines to cart and place orders
 
-Password encryption with BCrypt
+Track order status (Created → Paid → Dispatched → Delivered)
 
-Token stored client-side and attached to protected requests
+Manage profile and logout safely
 
-👨‍⚕️ Appointments
+The system is built using Spring Boot (backend) and vanilla HTML/CSS/JS (frontend), deployed on Render (free tier).
 
-View available doctors
+🔗 Live Demo
 
-Book appointments with date & time
+👉 Backend + Frontend (Render)
+https://clinic-appointment-management-system.onrender.com
 
-View all your booked appointments
-
-Appointments are user-specific and secure
-
-💊 Medicines & Orders
-
-Browse available medicines
-
-Add medicines to cart
-
-Checkout and place orders
-
-Order lifecycle:
-
-CREATED → PAID → DISPATCHED → DELIVERED
-
-Order status updates reflected in UI
-
-📊 Dashboard
-
-Central navigation hub
-
-Quick access to appointments, booking, medicines, orders, and profile
-
-Clean card-based layout
-
-👤 User Profile
-
-View logged-in user details
-
-Secure logout from anywhere
+⚠️ Free-tier note:
+Render spins down inactive services. First request may take ~30–60 seconds.
 
 🧱 Tech Stack
 Backend
 
 Java 17
 
-Spring Boot
+Spring Boot 3
 
-Spring Security
-
-JWT (JSON Web Tokens)
+Spring Security (JWT)
 
 Spring Data JPA
 
-H2 / MySQL (configurable)
+Hibernate
+
+H2 In-Memory Database (demo / free hosting)
 
 Maven
 
@@ -74,116 +45,187 @@ Frontend
 
 HTML5
 
-CSS3 (custom, no frameworks)
+CSS3
 
-Vanilla JavaScript (Fetch API)
+Vanilla JavaScript
 
-Responsive layout
+LocalStorage (JWT + cart)
 
-📁 Project Structure (Simplified)
+Deployment
+
+Docker
+
+Render (Free Web Service)
+
+🧠 System Architecture
+Browser (HTML / JS)
+        |
+        |  REST APIs (JSON)
+        |
+Spring Boot Application
+        |
+        |  JPA / Hibernate
+        |
+     H2 Database (in-memory)
+
+
+Frontend pages are served as static resources from Spring Boot
+
+Authentication is stateless using JWT
+
+Orders, appointments, doctors, medicines handled via REST APIs
+
+🔐 Authentication & Security
+
+JWT-based authentication
+
+Token stored in localStorage
+
+Authorization: Bearer <token> header for protected APIs
+
+Public routes:
+
+/auth/login
+
+/users (registration)
+
+Static pages & assets
+
+Protected routes:
+
+/appointments
+
+/orders
+
+/profile
+
+Logout clears token and cart from browser storage.
+
+📂 Project Structure (Simplified)
 src/main/java/com/clinic/appointment
- ├── config        → Security configuration
- ├── controller    → REST controllers
- ├── dto           → Data Transfer Objects
- ├── entity        → JPA entities
- ├── repository    → Database repositories
- ├── security      → JWT filter & utilities
- └── service       → Business logic
+├── config        → Security configuration
+├── controller    → REST controllers
+├── dto           → Request/Response DTOs
+├── entity        → JPA entities
+├── repository    → JPA repositories
+├── security      → JWT filter & utility
+├── service       → Business logic
 
-src/main/resources/static
- ├── *.html        → UI pages
- ├── css/style.css
- └── js/*.js
+src/main/resources
+├── static        → Frontend (HTML/CSS/JS)
+├── application.properties
 
-🔑 Authentication Flow
+🚀 Features
+👤 User
 
-User logs in via /auth/login
+Register & login
 
-Backend issues JWT token
+View profile
 
-Token is stored in localStorage
+Logout
 
-All protected requests send:
+🩺 Appointments
 
-Authorization: Bearer <token>
+View available doctors
 
+Book appointments
 
-JWT filter validates token and sets authentication context
+View booked appointments
 
-▶️ How to Run
-Backend
-./mvnw spring-boot:run
-
-
-Backend runs at:
-
-http://localhost:8080
-
-Frontend
-
-Open any HTML file directly or use a local static server (recommended):
-
-npx serve src/main/resources/static
-
-
-Then visit:
-
-http://localhost:5500/index.html
-
-🧪 Default Flow to Test
-
-Register a new user
-
-Login to receive JWT
-
-Browse doctors
-
-Book an appointment
+💊 Medicines & Orders
 
 Browse medicines
 
-Add to cart → checkout → place order
+Add to cart
 
-Track order status
+Checkout & place order
 
-🛠️ UI Improvements Done
+Auto-payment simulation
 
-Consistent navigation across all pages
+Track order lifecycle
 
-Centralized logout handling
+🧪 Local Setup (Development)
+1️⃣ Clone the repository
+git clone https://github.com/sahilusmani7/clinic-appointment-management-system.git
+cd clinic-appointment-management-system
 
-Clean card-based UI
+2️⃣ Run the backend
+./mvnw spring-boot:run
 
-Status badges for clarity
 
-Responsive layout for smaller screens
+Backend runs on:
 
-🎯 Learning Outcomes
+http://localhost:8080
 
-Secure REST API design
+3️⃣ Open frontend
 
-JWT authentication flow
+Use VS Code Live Server or open directly:
 
-Spring Security customization
+index.html
 
-Frontend ↔ Backend integration
+🗄 Database Strategy
+Current (Demo / Free Hosting)
 
-State management using localStorage
+H2 In-Memory Database
 
-Clean UI without heavy frameworks
+Auto-created on startup
 
-📌 Future Enhancements (Optional)
+Demo data (doctors, medicines, demo user) seeded at runtime
 
-Appointment cancellation
+Data resets on restart (expected behavior)
 
-Admin dashboard
+Production-Ready Option
 
-Medicine stock auto-update
+Can be upgraded to:
+
+MySQL (PlanetScale / Railway)
+
+PostgreSQL (Supabase / Neon)
+
+No code changes required — only config.
+
+🐳 Docker Support
+
+Project includes a Dockerfile for deployment.
+
+Render uses Docker to:
+
+Build the app
+
+Expose port 8080
+
+Inject environment variables securely
+
+⚙️ Environment Variables (Render)
+Variable	Description
+jwt.secret	JWT signing secret
+jwt.expiration	Token expiration (ms)
+📌 Known Limitations (Free Tier)
+
+In-memory database resets on restart
+
+Cold start delay on Render
+
+No persistent storage (by design)
+
+These are intentional tradeoffs for a free deployment.
+
+🔮 Future Enhancements
+
+Persistent cloud database
+
+Admin panel (manage doctors & medicines)
+
+Appointment cancellation & rescheduling
 
 Payment gateway integration
 
-Dashboard analytics
+Email notifications
 
-👤 Author
+Role-based access (ADMIN / USER)
+
+API documentation (Swagger)
+
+👨‍💻 Author
 
 Sahil Usmani
