@@ -30,14 +30,21 @@ public class SecurityConfig {
                                                                 "/index.html",
                                                                 "/register.html",
                                                                 "/dashboard.html",
+                                                                "/appointments.html",
+                                                                "/book-appointment.html",
+                                                                "/doctors.html",
+                                                                "/profile.html",
+
                                                                 "/css/**",
                                                                 "/js/**",
+
                                                                 "/auth/login",
                                                                 "/users",
                                                                 "/doctors",
                                                                 "/appointments/**")
                                                 .permitAll()
                                                 .anyRequest().authenticated())
+
                                 .addFilterBefore(jwtAuthFilter,
                                                 UsernamePasswordAuthenticationFilter.class)
                                 .formLogin(form -> form.disable())

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Appointments</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- GLOBAL NAVBAR -->
+<nav class="top-nav">
+    <div class="nav-left">
+        <span class="brand">ClinicCare</span>
+    </div>
+
+    <div class="nav-right">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="appointments.html">Appointments</a>
+        <a href="book-appointment.html">Book</a>
+        <a href="doctors.html">Doctors</a>
+        <a href="profile.html">Profile</a>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+</nav>
+
+<!-- PAGE CONTENT -->
+<main class="page-content">
+
+    <h2>My Appointments</h2>
+
+    <!-- FILTER BAR (UI ONLY FOR NOW) -->
+    <div class="card" style="margin-bottom: 20px;">
+        <strong>Filters (coming soon)</strong>
+        <p style="color:#666; margin:6px 0 0;">
+            Filter by date, doctor, or status
+        </p>
+    </div>
+
+    <!-- APPOINTMENTS LIST -->
+    <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3>Appointments</h3>
+            <button class="secondary-btn" onclick="loadAppointments()">Refresh</button>
+        </div>
+
+        <div id="appointments" class="appointments-container">
+            <!-- appointments.js will render cards here -->
+        </div>
+    </div>
+
+</main>
+
+<script src="js/appointments.js"></script>
+</body>
+</html>

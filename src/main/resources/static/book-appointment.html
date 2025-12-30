@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Appointment</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- GLOBAL NAVBAR -->
+<nav class="top-nav">
+    <div class="nav-left">
+        <span class="brand">ClinicCare</span>
+    </div>
+
+    <div class="nav-right">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="appointments.html">Appointments</a>
+        <a href="book-appointment.html">Book</a>
+        <a href="doctors.html">Doctors</a>
+        <a href="profile.html">Profile</a>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+</nav>
+
+<!-- PAGE CONTENT -->
+<main class="page-content">
+
+    <h2>Book an Appointment</h2>
+
+    <div class="card" style="max-width: 520px;">
+        <label>Doctor</label>
+        <select id="doctorSelect"></select>
+
+        <label>Date & Time</label>
+        <input type="datetime-local" id="appointmentTime" />
+
+        <button class="primary-btn" onclick="bookAppointment()">
+            Book Appointment
+        </button>
+
+        <p id="message" class="message"></p>
+    </div>
+
+</main>
+
+<script src="js/appointments.js"></script>
+</body>
+</html>

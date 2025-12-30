@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Doctors</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- GLOBAL NAVBAR -->
+<nav class="top-nav">
+    <div class="nav-left">
+        <span class="brand">ClinicCare</span>
+    </div>
+
+    <div class="nav-right">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="appointments.html">Appointments</a>
+        <a href="book-appointment.html">Book</a>
+        <a href="doctors.html">Doctors</a>
+        <a href="profile.html">Profile</a>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+</nav>
+
+<!-- PAGE CONTENT -->
+<main class="page-content">
+
+    <h2>Our Doctors</h2>
+
+    <div class="card">
+        <div id="doctorsList">
+            <!-- Doctors will be loaded here -->
+        </div>
+    </div>
+
+</main>
+
+<script>
+const token = localStorage.getItem("token");
+
+async function loadDoctorsPage() {
+    const response = await fetch("http://localhost:8080/doctors", {
+        headers: {
+            "Authorization": "Bearer " + token
+        }
+    });
+
+    const doctors = await response.json();
+    const container = document.getElementById("doctorsList");
+    container.innerHTML = "";
+
+    doctors.forEach(doc => {
+        const div = document.createElement("div");
+        div.className = "appointment-card";
+        div.innerHTML = `
+            <h4>${doc.name}</h4>
+            <p><strong>Specialization:</strong> ${doc.specialization}</p>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function logout() {
+    localStorage.removeItem("token");
+    window.location.href = "index.html";
+}
+
+loadDoctorsPage();
+</script>
+
+</body>
+</html>
